@@ -1,0 +1,22 @@
+name: Deploy Backend a VPS
+
+on:
+  push:
+    branches: [ "main" ] 
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, production] 
+
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Verificar entorno en la VPS
+        run: |
+          echo "Servidor de Oracle."
+          echo "Carpeta: $(pwd)"
+          docker --version
+          
+      - name: Simular construcción de imagen
+        run: echo "Testing construcción de la imagen Docker."
