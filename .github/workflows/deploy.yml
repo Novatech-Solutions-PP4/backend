@@ -17,6 +17,14 @@ jobs:
           echo "Servidor de Oracle."
           echo "Carpeta: $(pwd)"
           docker --version
+          docker compose version
           
-      - name: Simular construcción de imagen
-        run: echo "Testing construcción de la imagen Docker."
+      - name: Actualizar repositorio de infraestructura
+        run: |
+          cd /opt/novatech-solutions/runner/_work/infrastructure/infrastructure
+          git pull origin main
+
+      - name: Reconstruir y desplegar imagen Docker
+        run: |
+          cd /opt/novatech-solutions/runner/_work/infrastructure/infrastructure
+          docker compose up -d --build backend
