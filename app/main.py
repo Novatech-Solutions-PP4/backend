@@ -16,15 +16,6 @@ app = FastAPI(
 
 @app.middleware("http")
 async def security_middleware(request: Request, call_next):
-    allowed_ips_str = os.getenv("ALLOWED_IPS", "")
-
-    allowed_ips = [ip.strip() for ip in allowed_ips_str.split(",") if ip.strip()]
-
-    client_ip = request.headers.get("x-forwarded-for", request.client.host).split(",")[0].strip()
-
-    if client_ip in allowed_ips:
-        return await call_next(request)
-
     origin = request.headers.get("origin", "")
 
     if not origin:
