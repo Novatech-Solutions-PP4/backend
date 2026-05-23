@@ -1,6 +1,6 @@
 import os
 from urllib.parse import urlparse
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from . import models
@@ -13,24 +13,6 @@ app = FastAPI(
     description="Backend para el sistema de gestión de lavandería LavaPro",
     version="0.1.0"
 )
-
-@app.middleware("http")
-async def security_middleware(request: Request, call_next):
-    origin = request.headers.get("origin", "")
-
-    if not origin:
-        raise HTTPException(status_code=403, detail="Origin requerido")
-
-    parsed = urlparse(origin)
-
-    hostname = parsed.hostname or ""
-
-    is_valid_origin = (parsed.scheme == "https" and (hostname == "lavapro.online" or hostname.endswith(".lavapro.online")))
-
-    if not is_valid_origin:
-        raise HTTPException(status_code=403, detail="Acceso denegado")
-
-    return await call_next(request)
 
 app.add_middleware(
     CORSMiddleware,
