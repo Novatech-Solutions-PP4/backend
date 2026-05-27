@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: lavapro-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: lavapro
+      POSTGRES_PASSWORD: lavapropass!123
+      POSTGRES_DB: lavapro_api
+    volumes:
+      - lavapro_db_data:/var/lib/postgresql
+    restart: unless-stopped
+
+volumes:
+  lavapro_db_data:
