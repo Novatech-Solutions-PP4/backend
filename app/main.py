@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from . import models
 from .routes import insumos
+from .routes import detalles_servicio
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,6 +22,7 @@ app.add_middleware(
 )
 
 app.include_router(insumos.router)
+app.include_router(detalles_servicio.router)
 
 @app.get("/", tags=["Status"])
 def read_root():
