@@ -10,6 +10,12 @@ from .routes import servicios
 from .routes import estados
 from .routes import unidades_limpieza
 
+app = FastAPI(
+    title="LavaPro API",
+    description="Backend para el sistema de gestión de lavandería LavaPro",
+    version="0.1.0"
+)
+
 Base.metadata.create_all(bind=engine)
 
 @app.on_event("startup")
@@ -29,12 +35,6 @@ def run_db_seeding():
             print(f"Error controlado en el script de inicialización: {e}")
     else:
         print(f"Archivo seed_data.sql no encontrado en: {sql_file_path}")
-
-app = FastAPI(
-    title="LavaPro API",
-    description="Backend para el sistema de gestión de lavandería LavaPro",
-    version="0.1.0"
-)
 
 app.add_middleware(
     CORSMiddleware,
