@@ -13,7 +13,7 @@ class Rol(Base):
 class Estado(Base):
     __tablename__ = "estados"
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, unique=True, nullable=False)
+    nombre = Column(String, unique=True, nullable=False) 
     
     historiales = relationship("HistorialEstados", back_populates="estado")
 
@@ -41,14 +41,14 @@ class MetodoPago(Base):
 class UnidadLimpieza(Base):
     __tablename__ = "unidades_limpieza"
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, nullable=False)  # ej: canasto, acolchado, calzado
-    
+    nombre = Column(String, nullable=False)  
+
     servicios = relationship("Servicio", back_populates="unidad_limpieza")
 
 class ModalidadServicio(Base):
     __tablename__ = "modalidades_servicio"
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, nullable=False)  # ej: economico, standar, delicado
+    nombre = Column(String, nullable=False) 
     
     servicios = relationship("Servicio", back_populates="modalidad")
 
