@@ -1,8 +1,8 @@
 import os
-from urllib.parse import urlparse
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
+from sqlalchemy import text
 from . import models
 from .routes import insumos
 from .routes import modalidades_servicio
@@ -26,9 +26,9 @@ def run_db_seeding():
                 connection.execute(text("CALL seed_initial_laundry_data();"))
                 connection.commit()
         except Exception as e:
-            print(f"Error durante el seeding automático: {e}")
+            print(f"Error controlado en el script de inicialización: {e}")
     else:
-        print(f"No se encontró el archivo SQL en: {sql_file_path}")
+        print(f"Archivo seed_data.sql no encontrado en: {sql_file_path}")
 
 app = FastAPI(
     title="LavaPro API",
