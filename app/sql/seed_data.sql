@@ -18,7 +18,7 @@ BEGIN
 
     INSERT INTO estados (nombre)
     SELECT v.nombre 
-    FROM (VALUES ('pendiente'), ('en proceso'), ('listo'), ('entregado')) AS v(nombre)
+    FROM (VALUES ('pendiente'), ('en proceso'), ('listo'), ('entregado'), ('cancelado')) AS v(nombre)
     WHERE NOT EXISTS (
         SELECT 1 FROM estados t WHERE t.nombre = v.nombre
     );
