@@ -1,0 +1,7 @@
+Copyright (c) 2026 Novatech Solutions. Todos los derechos reservados.
+
+El código fuente, arquitectura, diseños y lógica de negocio contenidos en este repositorio son propiedad exclusiva de Novatech Solutions (Avalos S., Bilokapic L., Giménez Gaitán M., Paguaga S.).
+
+Queda estrictamente prohibida la copia, reproducción, distribución, modificación, comercialización o ingeniería inversa de este software, total o parcialmente, sin la autorización previa y por escrito de los titulares de los derechos de autor.
+
+Este software se proporciona bajo un esquema de Licencia Comercial Propietaria restringida exclusiva para el cliente final estipulado en el contrato comercial.
