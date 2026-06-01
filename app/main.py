@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from . import models
 from .routes import insumos
+from .routes import servicios
 from .routes import estados
 from .routes import unidades_limpieza
 
@@ -25,6 +26,7 @@ app.add_middleware(
 )
 
 app.include_router(insumos.router)
+app.include_router(servicios.router)
 app.include_router(estados.router)
 app.include_router(unidades_limpieza.router)
 
