@@ -12,6 +12,24 @@ from .routes import unidades_limpieza
 
 Base.metadata.create_all(bind=engine)
 
+@app.on_event("startup")
+def run_db_seeding():
+    sql_file_path = os.path.join(os.path.dirname(__file__), "sql", "seed_data.sql")
+    
+    if os.path.exists(sql_file_path):
+        try:
+            with open(sql_file_path, "r", encoding="utf-8") as f:
+                sql_script = f.read()
+            
+            with engine.connect() as connection:
+                connection.execute(text(sql_script))
+                connection.execute(text("CALL seed_initial_laundry_data();"))
+                connection.commit()
+        except Exception as e:
+            print(f"Error durante el seeding automático: {e}")
+    else:
+        print(f"No se encontró el archivo SQL en: {sql_file_path}")
+
 app = FastAPI(
     title="LavaPro API",
     description="Backend para el sistema de gestión de lavandería LavaPro",
