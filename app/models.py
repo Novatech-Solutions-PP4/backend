@@ -17,6 +17,20 @@ class Estado(Base):
     
     historiales = relationship("HistorialEstados", back_populates="estado")
 
+class EstadoReclamo(Base):
+    __tablename__ = "estados_reclamos"
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String, unique=True, nullable=False)
+    
+    reclamos = relationship("Reclamo", back_populates="estado_rel")
+
+class CategoriaReclamo(Base):
+    __tablename__ = "categorias_reclamos"
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String, unique=True, nullable=False)
+    
+    reclamos = relationship("Reclamo", back_populates="categoria_rel")
+
 class MetodoPago(Base):
     __tablename__ = "metodos_pago"
     id = Column(Integer, primary_key=True, index=True)
@@ -126,12 +140,14 @@ class Reclamo(Base):
     __tablename__ = "reclamos"
     id = Column(Integer, primary_key=True, index=True)
     id_pedido = Column(Integer, ForeignKey("pedidos.id"), nullable=False)
-    categoria = Column(String, nullable=False)
-    estado = Column(String, default="Abierto")
+    id_categoria = Column(Integer, ForeignKey("categorias_reclamos.id"), nullable=False)
+    id_estado = Column(Integer, ForeignKey("estados_reclamos.id"), nullable=False)
     fecha_creacion = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-
+    
     pedido = relationship("Pedido", back_populates="reclamos")
     mensajes = relationship("MensajeReclamo", back_populates="reclamo", cascade="all, delete-orphan")
+    categoria_rel = relationship("CategoriaReclamo", back_populates="reclamos")
+    estado_rel = relationship("EstadoReclamo", back_populates="reclamos")
 
 class FacturacionPagos(Base):
     __tablename__ = "facturacion_pagos"
