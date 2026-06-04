@@ -1,16 +1,36 @@
 services:
   db:
-    image: postgres:latest
+    image: postgres:15-alpine
     container_name: lavapro-db
+    restart: always
+    env_file:
+      - .env
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: lavapro
-      POSTGRES_PASSWORD: lavapropass!123
-      POSTGRES_DB: lavapro_api
     volumes:
-      - lavapro_db_data:/var/lib/postgresql
-    restart: unless-stopped
+      - postgres_local_data:/var/lib/postgresql/data
+      - ./app/sql/seed_data.sql:/docker-entrypoint-initdb.d/seed_data.sql
+    networks:
+      - lavapro_network
+
+  backend:
+    container_name: lavapro-backend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - lavapro_network
+
+networks:
+  lavapro_network:
+    driver: bridge
 
 volumes:
-  lavapro_db_data:
+  postgres_local_data:
