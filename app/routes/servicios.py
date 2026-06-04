@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["Servicios"]
 )
 
-@router.post("/", response_model=schemas_servicios.ServicioResponse)
+@router.post("/", response_model=schemas_servicios.ServicioResponse, status_code=status.HTTP_201_CREATED)
 def crear_servicio(servicio: schemas_servicios.ServicioCreate, db: Session = Depends(get_db)):
     return services_servicios.create(db=db, servicio=servicio)
 
@@ -20,21 +20,12 @@ def obtener_servicios(skip: int = 0, limit: int = 100, db: Session = Depends(get
 
 @router.get("/{servicio_id}", response_model=schemas_servicios.ServicioResponse)
 def obtener_servicio_por_id(servicio_id: int, db: Session = Depends(get_db)):
-    db_servicio = services_servicios.get_by_id(db, servicio_id=servicio_id)
-    if db_servicio is None:
-        raise HTTPException(status_code=404, detail="Servicio no encontrado")
-    return db_servicio
+    return services_servicios.get_by_id(db, servicio_id=servicio_id)
 
 @router.patch("/{servicio_id}", response_model=schemas_servicios.ServicioResponse)
 def actualizar_servicio(servicio_id: int, servicio: schemas_servicios.ServicioUpdate, db: Session = Depends(get_db)):
-    db_servicio = services_servicios.update(db, servicio_id=servicio_id, servicio_data=servicio)
-    if db_servicio is None:
-        raise HTTPException(status_code=404, detail="Servicio no encontrado")
-    return db_servicio
+    return services_servicios.update(db, servicio_id=servicio_id, servicio_data=servicio)
 
 @router.delete("/{servicio_id}", response_model=schemas_servicios.ServicioResponse)
 def eliminar_servicio(servicio_id: int, db: Session = Depends(get_db)):
-    db_servicio = services_servicios.delete(db, servicio_id=servicio_id)
-    if db_servicio is None:
-        raise HTTPException(status_code=404, detail="Servicio no encontrado")
-    return db_servicio
+    return services_servicios.delete(db, servicio_id=servicio_id)
