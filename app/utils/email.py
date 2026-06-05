@@ -55,3 +55,33 @@ async def send_activation_email(to_email: str, nombre_usuario: str, token: str):
 
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(executor, _send_smtp_email_sync, to_email, subject, html_content)
+
+async def send_reset_password_email(to_email: str, nombre_usuario: str, token: str):
+    frontend_url = os.getenv("FRONTEND_URL", "https://app.lavapro.online")
+    reset_link = f"{frontend_url}/restablecer-password?token={token}"
+
+    subject = "LavaPro - Restablecer Contraseña"
+    
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+                <h2 style="color: #2c3e50;">¡Hola, {nombre_usuario}!</h2>
+                <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>LavaPro</strong>.</p>
+                <p>Si no realizaste esta solicitud, podés ignorar este correo con total tranquilidad. De lo contrario, hacé clic en el siguiente botón para generar una nueva clave:</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{reset_link}" style="background-color: #e67e22; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
+                        Restablecer Contraseña
+                    </a>
+                </div>
+                <p style="font-size: 12px; color: #7f8c8d;">Este enlace es válido por 2 horas. Si el botón no funciona, copiá y pegá el siguiente enlace en tu navegador:</p>
+                <p style="font-size: 12px; color: #3498db; word-break: break-all;">{reset_link}</p>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="font-size: 11px; color: #95a5a6; text-align: center;">LavaPro - Gestión Inteligente de Lavandería</p>
+            </div>
+        </body>
+    </html>
+    """
+
+    loop = asyncio.get_running_loop()
+    await loop.run_in_executor(executor, _send_smtp_email_sync, to_email, subject, html_content)

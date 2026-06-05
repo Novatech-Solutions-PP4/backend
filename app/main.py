@@ -1,25 +1,14 @@
 import os
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
+from .database import engine, Base, SessionLocal
 from sqlalchemy import text
 from . import models
-from .routes import insumos
-from .routes import modalidades_servicio
-from .routes import servicios
-from .routes import estados
-from .routes import unidades_limpieza
+from .routes import insumos, modalidades_servicio, servicios, estados, unidades_limpieza, auth, usuarios, roles
 
-app = FastAPI(
-    title="LavaPro API",
-    description="Backend para el sistema de gestión de lavandería LavaPro",
-    version="0.1.0"
-)
-
-Base.metadata.create_all(bind=engine)
-
-@app.on_event("startup")
-def run_db_seeding():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     sql_file_path = os.path.join(os.path.dirname(__file__), "sql", "seed_data.sql")
     
     if os.path.exists(sql_file_path):
@@ -27,14 +16,25 @@ def run_db_seeding():
             with open(sql_file_path, "r", encoding="utf-8") as f:
                 sql_script = f.read()
             
-            with engine.connect() as connection:
-                connection.execute(text(sql_script))
-                connection.execute(text("CALL seed_initial_laundry_data();"))
-                connection.commit()
-        except Exception as e:
-            print(f"Error controlado en el script de inicialización: {e}")
+            with SessionLocal() as db:
+                db.execute(text(sql_script))
+                db.execute(text("CALL seed_initial_laundry_data();"))
+                db.commit()
+            print("Seeding inicial de la base de datos completado con éxito. 🎉")
+        except Exception as err:
+            print(f"Error controlado en el script de inicialización: {err}")
     else:
         print(f"Archivo seed_data.sql no encontrado en: {sql_file_path}")
+    yield
+
+app = FastAPI(
+    title="LavaPro API",
+    description="Backend para el sistema de gestión de lavandería LavaPro",
+    version="0.1.0",
+    lifespan=lifespan  
+)
+
+Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
@@ -49,6 +49,9 @@ app.include_router(modalidades_servicio.router)
 app.include_router(servicios.router)
 app.include_router(estados.router)
 app.include_router(unidades_limpieza.router)
+app.include_router(auth.router)
+app.include_router(usuarios.router)
+app.include_router(roles.router)
 
 @app.get("/", tags=["Status"])
 def read_root():
