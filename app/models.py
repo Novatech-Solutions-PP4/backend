@@ -68,7 +68,7 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_rol = Column(Integer, ForeignKey("roles.id"), nullable=False)
     password_cambiada = Column(Boolean, default=False)
-    cuenta_activa = Column(Boolean, default=True)
+    cuenta_activa = Column(Boolean, default=False)
     codigo_qr = Column(String, nullable=True)
     nombre = Column(String, nullable=False)
     apellido = Column(String, nullable=False)
