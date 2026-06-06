@@ -49,7 +49,10 @@ def login(credenciales: schemas_usuarios.UsuarioLogin, db: Session = Depends(get
             "nombre": usuario.nombre,
             "apellido": usuario.apellido,
             "email": usuario.email,
-            "rol": usuario.rol.nombre
+            "rol": usuario.rol.nombre,
+            "dni": usuario.dni,
+            "telefono": usuario.telefono,
+            "codigo_qr": usuario.codigo_qr
         }
     }
 
