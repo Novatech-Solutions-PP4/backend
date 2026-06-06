@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas_unidades.UnidadLimpiezaResponse, status_code=status.HTTP_201_CREATED)
 def crear_unidad(
-    unidad: schemas_unidades.UnidadLimpiezaCreate, 
+    unidad: schemas_unidades.UnidadLimpiezaCreate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -22,8 +22,8 @@ def crear_unidad(
 
 @router.get("/", response_model=List[schemas_unidades.UnidadLimpiezaResponse])
 def obtener_unidades(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -31,7 +31,7 @@ def obtener_unidades(
 
 @router.get("/{unidad_id}", response_model=schemas_unidades.UnidadLimpiezaResponse)
 def obtener_unidad_por_id(
-    unidad_id: int, 
+    unidad_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -42,8 +42,8 @@ def obtener_unidad_por_id(
 
 @router.patch("/{unidad_id}", response_model=schemas_unidades.UnidadLimpiezaResponse)
 def actualizar_unidad(
-    unidad_id: int, 
-    unidad: schemas_unidades.UnidadLimpiezaUpdate, 
+    unidad_id: int,
+    unidad: schemas_unidades.UnidadLimpiezaUpdate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -54,7 +54,7 @@ def actualizar_unidad(
 
 @router.delete("/{unidad_id}", response_model=schemas_unidades.UnidadLimpiezaResponse)
 def eliminar_unidad(
-    unidad_id: int, 
+    unidad_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):

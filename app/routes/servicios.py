@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas_servicios.ServicioResponse, status_code=status.HTTP_201_CREATED)
 def crear_servicio(
-    servicio: schemas_servicios.ServicioCreate, 
+    servicio: schemas_servicios.ServicioCreate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -22,8 +22,8 @@ def crear_servicio(
 
 @router.get("/", response_model=List[schemas_servicios.ServicioResponse])
 def obtener_servicios(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -31,7 +31,7 @@ def obtener_servicios(
 
 @router.get("/{servicio_id}", response_model=schemas_servicios.ServicioResponse)
 def obtener_servicio_por_id(
-    servicio_id: int, 
+    servicio_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -42,8 +42,8 @@ def obtener_servicio_por_id(
 
 @router.patch("/{servicio_id}", response_model=schemas_servicios.ServicioResponse)
 def actualizar_servicio(
-    servicio_id: int, 
-    servicio: schemas_servicios.ServicioUpdate, 
+    servicio_id: int,
+    servicio: schemas_servicios.ServicioUpdate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -54,7 +54,7 @@ def actualizar_servicio(
 
 @router.delete("/{servicio_id}", response_model=schemas_servicios.ServicioResponse)
 def eliminar_servicio(
-    servicio_id: int, 
+    servicio_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):

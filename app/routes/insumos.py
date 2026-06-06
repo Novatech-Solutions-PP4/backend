@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas_insumos.InsumoResponse, status_code=status.HTTP_201_CREATED)
 def crear_insumo(
-    insumo: schemas_insumos.InsumoCreate, 
+    insumo: schemas_insumos.InsumoCreate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -22,8 +22,8 @@ def crear_insumo(
 
 @router.get("/", response_model=List[schemas_insumos.InsumoResponse])
 def obtener_insumos(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador", "Operador"]))
 ):
@@ -31,7 +31,7 @@ def obtener_insumos(
 
 @router.get("/{insumo_id}", response_model=schemas_insumos.InsumoResponse)
 def obtener_insumo_por_id(
-    insumo_id: int, 
+    insumo_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador", "Operador"]))
 ):
@@ -42,8 +42,8 @@ def obtener_insumo_por_id(
 
 @router.patch("/{insumo_id}", response_model=schemas_insumos.InsumoResponse)
 def actualizar_insumo(
-    insumo_id: int, 
-    insumo: schemas_insumos.InsumoUpdate, 
+    insumo_id: int,
+    insumo: schemas_insumos.InsumoUpdate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -54,7 +54,7 @@ def actualizar_insumo(
 
 @router.delete("/{insumo_id}", response_model=schemas_insumos.InsumoResponse)
 def eliminar_insumo(
-    insumo_id: int, 
+    insumo_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):

@@ -60,7 +60,6 @@ def login(credenciales: schemas_usuarios.UsuarioLogin, db: Session = Depends(get
 async def solicitar_recuperacion(datos: schemas_usuarios.UsuarioForgotPassword, db: Session = Depends(get_db)):
     return await services_usuarios.request_password_reset(db=db, email_str=datos.email)
 
-
 @router.post("/reset-password")
 def confirmar_recuperacion(datos: schemas_usuarios.UsuarioResetPassword, db: Session = Depends(get_db)):
     return services_usuarios.reset_password(db=db, datos_reset=datos)

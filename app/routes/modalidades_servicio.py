@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas_modalidades_servicio.ModalidadServicioResponse, status_code=status.HTTP_201_CREATED)
 def crear_modalidad_servicio(
-    item: schemas_modalidades_servicio.ModalidadServicioCreate, 
+    item: schemas_modalidades_servicio.ModalidadServicioCreate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -22,8 +22,8 @@ def crear_modalidad_servicio(
 
 @router.get("/", response_model=List[schemas_modalidades_servicio.ModalidadServicioResponse])
 def obtener_modalidades_servicio(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -31,7 +31,7 @@ def obtener_modalidades_servicio(
 
 @router.get("/{id}", response_model=schemas_modalidades_servicio.ModalidadServicioResponse)
 def obtener_modalidad_servicio_por_id(
-    id: int, 
+    id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -42,8 +42,8 @@ def obtener_modalidad_servicio_por_id(
 
 @router.patch("/{id}", response_model=schemas_modalidades_servicio.ModalidadServicioResponse)
 def actualizar_modalidad_servicio(
-    id: int, 
-    item: schemas_modalidades_servicio.ModalidadServicioUpdate, 
+    id: int,
+    item: schemas_modalidades_servicio.ModalidadServicioUpdate,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):
@@ -54,7 +54,7 @@ def actualizar_modalidad_servicio(
 
 @router.delete("/{id}", response_model=schemas_modalidades_servicio.ModalidadServicioResponse)
 def eliminar_modalidad_servicio(
-    id: int, 
+    id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador"]))
 ):

@@ -14,8 +14,8 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas_roles.RolResponse])
 def obtener_roles(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador", "Operador"]))
 ):
@@ -23,7 +23,7 @@ def obtener_roles(
 
 @router.get("/{rol_id}", response_model=schemas_roles.RolResponse)
 def obtener_rol_por_id(
-    rol_id: int, 
+    rol_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(RoleChecker(["Administrador", "Operador"]))
 ):
