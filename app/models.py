@@ -7,49 +7,49 @@ class Rol(Base):
     __tablename__ = "roles"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, unique=True, nullable=False)
-    
+
     usuarios = relationship("Usuario", back_populates="rol")
 
 class Estado(Base):
     __tablename__ = "estados"
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, unique=True, nullable=False) 
-    
+    nombre = Column(String, unique=True, nullable=False)
+
     historiales = relationship("HistorialEstados", back_populates="estado")
 
 class EstadoReclamo(Base):
     __tablename__ = "estados_reclamos"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, unique=True, nullable=False)
-    
+
     reclamos = relationship("Reclamo", back_populates="estado_rel")
 
 class CategoriaReclamo(Base):
     __tablename__ = "categorias_reclamos"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, unique=True, nullable=False)
-    
+
     reclamos = relationship("Reclamo", back_populates="categoria_rel")
 
 class MetodoPago(Base):
     __tablename__ = "metodos_pago"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, unique=True, nullable=False)
-    
+
     pagos = relationship("FacturacionPagos", back_populates="metodo_pago")
 
 class UnidadLimpieza(Base):
     __tablename__ = "unidades_limpieza"
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, nullable=False)  
+    nombre = Column(String, nullable=False)
 
     servicios = relationship("Servicio", back_populates="unidad_limpieza")
 
 class ModalidadServicio(Base):
     __tablename__ = "modalidades_servicio"
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, nullable=False) 
-    
+    nombre = Column(String, nullable=False)
+
     servicios = relationship("Servicio", back_populates="modalidad")
 
 class Insumo(Base):
@@ -60,7 +60,7 @@ class Insumo(Base):
     cantidad_alerta = Column(Float, default=0.0)
     costo_actual = Column(Float, default=0.0)
     baja = Column(Boolean, default=False)
-    
+
     insumos_servicios = relationship("InsumosServicios", back_populates="insumo")
 
 class Usuario(Base):
@@ -143,40 +143,17 @@ class Reclamo(Base):
     id_categoria = Column(Integer, ForeignKey("categorias_reclamos.id"), nullable=False)
     id_estado = Column(Integer, ForeignKey("estados_reclamos.id"), nullable=False)
     fecha_creacion = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    
+
     pedido = relationship("Pedido", back_populates="reclamos")
     mensajes = relationship("MensajeReclamo", back_populates="reclamo", cascade="all, delete-orphan")
     categoria_rel = relationship("CategoriaReclamo", back_populates="reclamos")
     estado_rel = relationship("EstadoReclamo", back_populates="reclamos")
-
-    @property
-    def status(self):
-        return self.estado_rel.nombre if self.estado_rel else "En Revisión"
-
-    @property
-    def categoria(self):
-        return self.categoria_rel.nombre if self.categoria_rel else ""
-
-    @property
-    def pedidoId(self):
-        return str(self.id_pedido)
-
-    @property
-    def cliente(self):
-        if self.pedido and self.pedido.usuario:
-            return f"{self.pedido.usuario.nombre} {self.pedido.usuario.apellido}"
-        return "Cliente Desconocido"
-
-    @property
-    def fecha(self):
-        return self.fecha_creacion.strftime('%d/%m/%Y') if self.fecha_creacion else ""
 
 class FacturacionPagos(Base):
     __tablename__ = "facturacion_pagos"
     id = Column(Integer, primary_key=True, index=True)
     id_pedido = Column(Integer, ForeignKey("pedidos.id"), nullable=False)
     id_metodo_pago = Column(Integer, ForeignKey("metodos_pago.id"), nullable=False)
-    id_transaccion_externa = Column(String, unique=True, index=True, nullable=True)
     estado = Column(String, nullable=False)
     monto = Column(Float, nullable=False)
     fecha_pago = Column(DateTime, nullable=True)
@@ -201,7 +178,6 @@ class MensajeReclamo(Base):
     id_usuario = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
     mensaje = Column(String, nullable=False)
     fecha_envio = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    leido = Column(Boolean, default=False, nullable=False)
 
     reclamo = relationship("Reclamo", back_populates="mensajes")
     usuario = relationship("Usuario", back_populates="mensajes_reclamo")
@@ -214,7 +190,7 @@ class MensajeReclamo(Base):
     def sender(self):
         if self.usuario and self.usuario.rol:
             return "cliente" if self.usuario.rol.nombre.lower() == "cliente" else "soporte"
-        
+
         if self.reclamo and self.reclamo.pedido and self.id_usuario == self.reclamo.pedido.id_usuario:
             return "cliente"
         return "soporte"
