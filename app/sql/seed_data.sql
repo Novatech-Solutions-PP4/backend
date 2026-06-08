@@ -29,5 +29,13 @@ BEGIN
     WHERE NOT EXISTS (
         SELECT 1 FROM estados t WHERE t.nombre = v.nombre
     );
+
+    INSERT INTO metodos_pago (nombre)
+    SELECT v.nombre 
+    FROM (VALUES ('Mercado Pago')) AS v(nombre)
+    WHERE NOT EXISTS (
+        SELECT 1 FROM metodos_pago t WHERE t.nombre = v.nombre
+    );
+
 END;
 $$;
