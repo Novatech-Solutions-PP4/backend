@@ -181,3 +181,27 @@ class MensajeReclamo(Base):
 
     reclamo = relationship("Reclamo", back_populates="mensajes")
     usuario = relationship("Usuario", back_populates="mensajes_reclamo")
+
+    @property
+    def text(self):
+        return self.mensaje
+
+    @property
+    def sender(self):
+        if self.usuario and self.usuario.rol:
+            return "cliente" if self.usuario.rol.nombre.lower() == "cliente" else "soporte"
+        
+        if self.reclamo and self.reclamo.pedido and self.id_usuario == self.reclamo.pedido.id_usuario:
+            return "cliente"
+        return "soporte"
+
+    @property
+    def senderName(self):
+        if self.usuario:
+            role_suffix = f" ({self.usuario.rol.nombre})" if self.usuario.rol and self.usuario.rol.nombre.lower() != "cliente" else ""
+            return f"{self.usuario.nombre} {self.usuario.apellido}{role_suffix}"
+        return "Soporte"
+
+    @property
+    def time(self):
+        return self.fecha_envio.strftime('%d/%m/%Y — %H:%M') if self.fecha_envio else ""
