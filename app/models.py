@@ -154,6 +154,7 @@ class FacturacionPagos(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_pedido = Column(Integer, ForeignKey("pedidos.id"), nullable=False)
     id_metodo_pago = Column(Integer, ForeignKey("metodos_pago.id"), nullable=False)
+    id_transaccion_externa = Column(String, unique=True, index=True, nullable=True)
     estado = Column(String, nullable=False)
     monto = Column(Float, nullable=False)
     fecha_pago = Column(DateTime, nullable=True)
