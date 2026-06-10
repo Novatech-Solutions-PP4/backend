@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base, SessionLocal
 from sqlalchemy import text
 from . import models
-from .routes import insumos, modalidades_servicio, servicios, estados, unidades_limpieza, auth, usuarios, roles, pedidos, metodos_pago
+from .routes import insumos, modalidades_servicio, servicios, estados, unidades_limpieza, auth, usuarios, roles, pedidos, metodos_pago, historial_estados, estados_reclamos, categorias_reclamos, reclamos
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -129,6 +129,10 @@ app.include_router(usuarios.router)
 app.include_router(roles.router)
 app.include_router(pedidos.router)
 app.include_router(metodos_pago.router)
+app.include_router(historial_estados.router)
+app.include_router(estados_reclamos.router)
+app.include_router(categorias_reclamos.router)
+app.include_router(reclamos.router)
 
 @app.get("/", tags=["Status"])
 def read_root():
