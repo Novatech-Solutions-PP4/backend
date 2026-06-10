@@ -37,5 +37,18 @@ BEGIN
         SELECT 1 FROM metodos_pago t WHERE t.nombre = v.nombre
     );
 
+    INSERT INTO estados_reclamos (nombre)
+    SELECT v.nombre 
+    FROM (VALUES ('Abierto'), ('En Revisión'), ('Resuelto')) AS v(nombre)
+    WHERE NOT EXISTS (
+        SELECT 1 FROM estados_reclamos t WHERE t.nombre = v.nombre
+    );
+
+    INSERT INTO categorias_reclamos (nombre)
+    SELECT v.nombre 
+    FROM (VALUES ('Prenda Dañada o Manchada'), ('Falta una Prenda en la Entrega'), ('Demora excesiva en los plazos'), ('Error en el Cobro / Precio de Lista'), ('Otro motivo específico')) AS v(nombre)
+    WHERE NOT EXISTS (
+        SELECT 1 FROM categorias_reclamos t WHERE t.nombre = v.nombre
+    );
 END;
 $$;
