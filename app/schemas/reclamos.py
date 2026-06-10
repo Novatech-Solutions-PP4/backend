@@ -2,10 +2,6 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 
-
-
-
-
 class MensajeReclamoCreate(BaseModel):
     mensaje: str = Field(..., description="Contenido de texto del mensaje")
 
@@ -16,8 +12,7 @@ class MensajeReclamoResponse(BaseModel):
     mensaje: str
     fecha_envio: datetime
     leido: bool
-    
-    
+
     sender: str
     text: str
     time: str
@@ -25,10 +20,6 @@ class MensajeReclamoResponse(BaseModel):
 
     class Config:
         from_attributes = True
-
-
-
-
 
 class ReclamoCreate(BaseModel):
     id_pedido: int = Field(..., description="ID del pedido asociado al reclamo")
@@ -45,14 +36,13 @@ class ReclamoResponse(BaseModel):
     id_categoria: int
     id_estado: int
     fecha_creacion: datetime
-    
-    
+
     pedidoId: str
     cliente: str
     status: str
     categoria: str
     fecha: str
-    
+
     mensajes: List[MensajeReclamoResponse] = []
     unread_count: int = 0
 

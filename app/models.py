@@ -149,6 +149,28 @@ class Reclamo(Base):
     categoria_rel = relationship("CategoriaReclamo", back_populates="reclamos")
     estado_rel = relationship("EstadoReclamo", back_populates="reclamos")
 
+    @property
+    def status(self):
+        return self.estado_rel.nombre if self.estado_rel else "En Revisión"
+
+    @property
+    def categoria(self):
+        return self.categoria_rel.nombre if self.categoria_rel else ""
+
+    @property
+    def pedidoId(self):
+        return str(self.id_pedido)
+
+    @property
+    def cliente(self):
+        if self.pedido and self.pedido.usuario:
+            return f"{self.pedido.usuario.nombre} {self.pedido.usuario.apellido}"
+        return "Cliente Desconocido"
+
+    @property
+    def fecha(self):
+        return self.fecha_creacion.strftime('%d/%m/%Y') if self.fecha_creacion else ""
+
 class FacturacionPagos(Base):
     __tablename__ = "facturacion_pagos"
     id = Column(Integer, primary_key=True, index=True)
@@ -179,6 +201,7 @@ class MensajeReclamo(Base):
     id_usuario = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
     mensaje = Column(String, nullable=False)
     fecha_envio = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    leido = Column(Boolean, default=False, nullable=False)
 
     reclamo = relationship("Reclamo", back_populates="mensajes")
     usuario = relationship("Usuario", back_populates="mensajes_reclamo")
