@@ -14,8 +14,8 @@ router = APIRouter(
 
 @router.get("", response_model=List[schemas_estados.EstadoReclamoResponse])
 def obtener_estados_reclamos(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -23,7 +23,7 @@ def obtener_estados_reclamos(
 
 @router.get("/{estado_id}", response_model=schemas_estados.EstadoReclamoResponse)
 def obtener_estado_reclamo_por_id(
-    estado_id: int, 
+    estado_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
