@@ -14,8 +14,8 @@ router = APIRouter(
 
 @router.get("", response_model=List[schemas_categorias.CategoriaReclamoResponse])
 def obtener_categorias_reclamos(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
@@ -23,7 +23,7 @@ def obtener_categorias_reclamos(
 
 @router.get("/{categoria_id}", response_model=schemas_categorias.CategoriaReclamoResponse)
 def obtener_categoria_reclamo_por_id(
-    categoria_id: int, 
+    categoria_id: int,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
