@@ -1,4 +1,4 @@
-# NovaTech Solutions - Frontend
+# NovaTech Solutions - Backend
 
 Backend del sistema de gestión desarrollado por **NovaTech Solutions** para el Proyecto Integrador del Instituto de Formación Técnica Superior N°29.
 
