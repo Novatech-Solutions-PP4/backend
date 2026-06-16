@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, List
 from app.schemas.unidades_limpieza import UnidadLimpiezaResponse
 from app.schemas.modalidades_servicio import ModalidadServicioResponse
@@ -23,6 +23,13 @@ class InsumoDelServicioResponse(BaseModel):
 class ServicioBase(BaseModel):
     nombre: str
     precio: float = 0.0
+
+    @field_validator("precio")
+    @classmethod
+    def validar_precio_no_negativo(cls, v: float) -> float:
+        if v < 0.0:
+            raise ValueError("El precio del servicio no puede ser negativo.")
+        return v
 
 class ServicioCreate(ServicioBase):
     id_unidad_limpieza: int

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional
 
 class InsumoBase(BaseModel):
@@ -6,6 +6,13 @@ class InsumoBase(BaseModel):
     cantidad: float = 0.0
     cantidad_alerta: float = 0.0
     costo_actual: float = 0.0
+
+    @field_validator("cantidad", "cantidad_alerta", "costo_actual")
+    @classmethod
+    def validar_no_negativo(cls, v: float) -> float:
+        if v < 0.0:
+            raise ValueError("El valor no puede ser negativo.")
+        return v
 
 class InsumoCreate(InsumoBase):
     pass 

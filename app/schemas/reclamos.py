@@ -1,9 +1,16 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
 from datetime import datetime
 
 class MensajeReclamoCreate(BaseModel):
     mensaje: str = Field(..., description="Contenido de texto del mensaje")
+
+    @field_validator("mensaje")
+    @classmethod
+    def validar_mensaje_no_vacio(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("El mensaje no puede estar vacío o contener solo espacios.")
+        return v
 
 class MensajeReclamoResponse(BaseModel):
     id: int
