@@ -63,7 +63,3 @@ NovaTech Solutions
 
 Instituto de Formación Técnica Superior N°29
 
-## Estado
-
-Proyecto académico en desarrollo.
-
