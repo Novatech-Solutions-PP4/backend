@@ -7,7 +7,7 @@ class InsumoBase(BaseModel):
     cantidad_alerta: float = 0.0
     costo_actual: float = 0.0
 
-    @field_validator("cantidad", "cantidad_alerta", "costo_actual")
+    @field_validator("cantidad_alerta", "costo_actual")
     @classmethod
     def validar_no_negativo(cls, v: float) -> float:
         if v < 0.0:

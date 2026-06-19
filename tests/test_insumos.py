@@ -26,24 +26,21 @@ def test_insumo_base_validation():
     assert schema_inst.cantidad == 10.0
     assert schema_inst.costo_actual == 450.0
 
-    # PASO 2: Datos inválidos (cantidad negativa)
-    payload_invalido = {
+    # PASO 2: Datos con cantidad negativa (Permitido)
+    payload_permitido_negativo = {
         "nombre": "Detergente Hipoalergénico",
         "cantidad": -5.0,
         "cantidad_alerta": 2.0,
         "costo_actual": 450.0
     }
-    print("\n--- PASO 2: Validar Cantidad Negativa ---")
-    print(f"  * Entrada: Datos del Schema = {payload_invalido}")
-    print("  * Resultado esperado: Pydantic ValidationError levantado por la cantidad negativa.")
+    print("\n--- PASO 2: Validar Cantidad Negativa (Permisivo) ---")
+    print(f"  * Entrada: Datos del Schema = {payload_permitido_negativo}")
+    print("  * Resultado esperado: Instanciación correcta del Schema sin errores.")
     
-    with pytest.raises(ValidationError) as exc_info:
-        InsumoBase(**payload_invalido)
-        
-    print(f"  * Resultado obtenido: ValidationError capturado exitosamente.")
-    print(f"    - Detalle del error: '{exc_info.value.errors()[0]['msg']}'")
-    assert "El valor no puede ser negativo" in exc_info.value.errors()[0]['msg']
-    print("  * Detalle de Validación: La validación impidió exitosamente registrar una cantidad de insumo negativa.")
+    schema_inst_neg = InsumoBase(**payload_permitido_negativo)
+    print(f"  * Resultado obtenido: Schema instanciado correctamente con cantidad negativa = {schema_inst_neg.cantidad}")
+    assert schema_inst_neg.cantidad == -5.0
+    print("  * Detalle de Validación: La validación permitió exitosamente registrar una cantidad de insumo negativa.")
 
     print("\nESTADO DE LA PRUEBA: PASSED (Éxito)")
     print("="*80)
